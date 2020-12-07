@@ -4,7 +4,10 @@ from flask_script import Manager
 from flask.templating import render_template
 from api import blueprint
 from api.v1.app import create_app, db
-from api.v1.model import user, user_sport,sport,clasificado,favourite_product,favourite_user,profile,match,role
+from api.v1.model import role, user, sport, clasificado, user_sport, favourite_user, favourite_product, profile, match
+
+
+
 
 # no quitar, es para que migre
 

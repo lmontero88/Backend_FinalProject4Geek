@@ -3,7 +3,7 @@ from api.v1.app import db, flask_bcrypt
 from api.v1.config import key
 
 class Clasificado(db.Model):
-    __tablename__ = 'clasificado'
+    __tablename__ = 'clasificados'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, ForeignKey('user.id'))
     name = db.Column(db.String(100))
@@ -11,9 +11,9 @@ class Clasificado(db.Model):
     description = db.Column(db.String(300), nullable=True, default="")
     condition = db.Column(db.String(100), nullable=True, default="")
     price = db.Column(db.Integer)
-    sport_id = db.Column(db.Integer, ForeignKey('sport.id'))
+    sport_id = db.Column(db.Integer, ForeignKey('sports.id'))
     sport = db.relationship('Sport', back_populates = 'clasificado')
-    Favourite_Product = db.relationship('Favourite_Product', backref='favourite_product', lazy=True)
+    Favourite_Clasificado = db.relationship('Favourite_Clasificado', backref='favourite_clasificado', lazy=True)
     user = db.relationship('User', backref='user', lazy=True)
 
     def serialize(self):
@@ -26,6 +26,6 @@ class Clasificado(db.Model):
             "condition":self.condition,
             "price":self.price,
             "sport_id":self.sport_id,
-            "Favourite_Product":self.Favourite_Product,
+            "Favourite_Clasificado":self.Favourite_Clasificado,
             "user":self.user,
         }

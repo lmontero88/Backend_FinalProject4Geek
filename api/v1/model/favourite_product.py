@@ -1,17 +1,16 @@
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.sql.schema import ForeignKey
-db = SQLAlchemy()
+from sqlalchemy import ForeignKey
+from api.v1.app import db
 
 class FavouriteProduct (db.Model):
     __tablename__ = 'Favourite_Product'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer,  ForeignKey('user.id'))
-    product_id = db.Column(db.Integer,  ForeignKey('product.id'))
+    clasificados_id = db.Column(db.Integer,  ForeignKey('clasificados.id'))
     user = db.relationship('User', backref = 'user', lazy=True)
 
     def serialize(self):
         return{
             "user_id":self.user_id,
-            "product_id":self.product_id,
+            "clasificados_id":self.clasificados_id,
             "user":self.user
         }

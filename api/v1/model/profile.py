@@ -1,6 +1,5 @@
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.sql.schema import ForeignKey
-db = SQLAlchemy()
+from sqlalchemy import ForeignKey
+from api.v1.app import db
 
 
 class Profile(db.Model):
@@ -10,7 +9,7 @@ class Profile(db.Model):
     facebook = db.Column(db.String(300), nullable=True, default="")
     instagram = db.Column(db.String(300), nullable=True, default="")
     photo = db.Column(db.String(300), nullable=True, default="")
-    user_id = db.Column(db.Integer, ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, ForeignKey('user.id'))
     user = db.relationship('User', secondary="user")
 
     def serialize(self):

@@ -1,5 +1,5 @@
-from flask_sqlalchemy import SQLAlchemy
-db = SQLAlchemy()
+from sqlalchemy import ForeignKey
+from api.v1.app import db
 
 
 class Role(db.Model):

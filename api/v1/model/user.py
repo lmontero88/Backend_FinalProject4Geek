@@ -24,8 +24,10 @@ class User(db.Model):
     region = db.Column(db.String(100))
     comuna = db.Column(db.String(100))
     gender = db.Column(db.String(100))
+    dia_hora = db.Column(db.DateTime)
     status = db.Column(db.Boolean, default=True)
     role = db.relationship('Role', secondary="role_users")
+
 
     def serialize(self):
         return {
@@ -41,7 +43,8 @@ class User(db.Model):
             "region": self.region,
             "comuna": self.comuna,
             "gender": self.gender,
-            "role": self.role
+            "role": self.role,
+            "dia_hora":self.dia_hora
         }
 
     @property

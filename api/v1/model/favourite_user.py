@@ -1,12 +1,11 @@
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.sql.schema import ForeignKey
-db = SQLAlchemy()
+from sqlalchemy import ForeignKey
+from api.v1.app import db
 
 class FavouriteUser(db.Model):
     __tablename__ = 'Favourite_User'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, ForeignKey('users.id'))
-    professor_id = db.Column(db.Integer, ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, ForeignKey('user.id'))
+    professor_id = db.Column(db.Integer, ForeignKey('user.id'))
     user = db.relationship('User', backref='user', lazy=True)
 
     def serialize(self):

@@ -1,15 +1,14 @@
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.sql.schema import ForeignKey
-db = SQLAlchemy()
+from sqlalchemy import ForeignKey
+from api.v1.app import db
 
 
 class UserSport(db.Model):
     __tablename__ = 'User_Sports'
     id = db.Column(db.Integer, primary_key=True)
     experiencia = db.Column(db.String(100), nullable=True, default="")
-    user_id = db.Column(db.Integer, ForeignKey('users.id'), primary_key=True)
+    user_id = db.Column(db.Integer, ForeignKey('user.id'), primary_key=True)
     sport_id = db.Column(db.Integer)
-    sport = db.relationship('UserSport', backref = 'sport', lazy=True)
+    sport = db.relationship('Sport', backref = 'sport', lazy=True)
     user = db.relationship('User', backref= 'user', lazy=True)
 
     def serialize(self):
