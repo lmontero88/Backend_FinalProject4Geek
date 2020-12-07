@@ -21,10 +21,10 @@ python-dotenv = "*"
 
 [requires]
 python_version = "3.9"
-
+python.py
 [scripts]
 start = "python manage.py run"
 init = "python manage.py db init"
-migrate = "python app.py db migrate"
+migrate = "python manage.py db migrate"
 upgrade = "python manage.py db upgrade"
 downgrade = "python manage.py db downgrade"

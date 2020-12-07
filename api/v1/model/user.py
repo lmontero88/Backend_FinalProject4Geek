@@ -15,6 +15,34 @@ class User(db.Model):
     public_id = db.Column(db.String(100), unique=True)
     username = db.Column(db.String(50), unique=True)
     password_hash = db.Column(db.String(100))
+    firstname = db.Column(db.String(100))
+    lastname = db.Column(db.String(100))
+    password = db.Column(db.String(100))
+    birthdate = db.Column(db.DateTime)
+    profile = db.relationship('Profile', backref="user", lazy=True, uselist=False)
+    phones = db.relationship('Phone', backref="user", lazy=True)
+    region = db.Column(db.String(100))
+    comuna = db.Column(db.String(100))
+    gender = db.Column(db.String(100))
+    status = db.Column(db.Boolean, default=True)
+    role = db.relationship('Role', secondary="role_users")
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "firstname": self.firstname,
+            "lastname": self.lastname,
+            "email": self.email,
+            "password": self.password,
+            "profile": self.profile.serialize(),
+            "phones": self.phones,
+            "status": self.status,
+            "birthdate": self.birthdate,
+            "region": self.region,
+            "comuna": self.comuna,
+            "gender": self.gender,
+            "role": self.role
+        }
 
     @property
     def password(self):
