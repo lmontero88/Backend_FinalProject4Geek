@@ -1,5 +1,5 @@
 import jwt
-import datetime
+from datetime import datetime
 from api.v1.app import db, flask_bcrypt
 from api.v1.config import key
 
@@ -10,14 +10,13 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
-    registered_at = db.Column(db.DateTime, nullable=False)
+    registered_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     admin = db.Column(db.Boolean, nullable=False, default=False)
     public_id = db.Column(db.String(100), unique=True)
     username = db.Column(db.String(50), unique=True)
-    password_hash = db.Column(db.String(100))
-    firstname = db.Column(db.String(100))
-    lastname = db.Column(db.String(100))
-    password = db.Column(db.String(100))
+    firstname = db.Column(db.String(100), nullable=False)
+    lastname = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
     birthdate = db.Column(db.DateTime)
     profile = db.relationship('Profile', backref="user", lazy=True, uselist=False)
     phones = db.relationship('Phone', backref="user", lazy=True)
