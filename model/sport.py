@@ -1,5 +1,5 @@
 from sqlalchemy import ForeignKey
-from api.v1.app import db
+from  app import db
 
 class Sport(db.Model): ##hasta aca estan ok las relaciones
     __tablename__ = 'sports'

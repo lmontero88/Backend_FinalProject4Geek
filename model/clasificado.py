@@ -1,6 +1,5 @@
 from sqlalchemy import ForeignKey
-from api.v1.app import db, flask_bcrypt
-from api.v1.config import key
+from  app import db, flask_bcrypt
 
 class Clasificado(db.Model):
     __tablename__ = 'clasificados'

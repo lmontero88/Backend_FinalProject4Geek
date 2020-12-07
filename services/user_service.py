@@ -1,8 +1,8 @@
 import uuid
 import datetime
 
-from api.v1.app import db
-from api.v1.model.user import User
+from app import db
+from model.user import User
 
 
 def save_new_user(data):

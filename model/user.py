@@ -1,7 +1,7 @@
 import jwt
 from datetime import datetime
-from api.v1.app import db, flask_bcrypt
-from api.v1.config import key
+from app import db, flask_bcrypt, key
+
 
 
 class User(db.Model):

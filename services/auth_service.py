@@ -1,5 +1,4 @@
-from api.v1.model.user import User
-
+from model.user import User
 
 class Auth:
     @staticmethod
