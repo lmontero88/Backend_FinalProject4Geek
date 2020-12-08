@@ -13,4 +13,3 @@ class Match(db.Model):
             "user_to_id":self.user_to_id,
             "user_from_id":self.user_from_id,
             "user":self.user
-        }
