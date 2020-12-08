@@ -15,30 +15,27 @@ class User(db.Model):
     last_name = db.Column(db.String(100), nullable=False)
     password_hash = db.Column(db.String(100), nullable=False)
     birthdate = db.Column(db.DateTime)
-    # phones = db.relationship('Phone', backref="user", lazy=True)
-    region = db.Column(db.String(100))
-    comuna = db.Column(db.String(100))
+    #dia_hora = db.Column(db.DateTime)
+    phones = db.Column(db.String(100))
     gender = db.Column(db.String(100))
-    dia_hora = db.Column(db.DateTime)
     status = db.Column(db.Boolean, default=True)
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'), nullable=False)
+    photo = db.Column(db.String(100), default='without-photo.png')
 
     def serialize(self):
         return {
             "id": self.id,
-            "firstname": self.firstname,
-            "lastname": self.lastname,
+            "firstname": self.first_name,
+            "lastname": self.last_name,
             "email": self.email,
             "password": self.password,
-            "profile": self.profile.serialize(),
             "phones": self.phones,
             "status": self.status,
             "birthdate": self.birthdate,
-            "region": self.region,
-            "comuna": self.comuna,
             "gender": self.gender,
-            "role": self.role,
-            "dia_hora": self.dia_hora
+            "role": self.role_id,
+            #"dia_hora": self.dia_hora,
+            "photo":self.photo,
         }
 
     @property

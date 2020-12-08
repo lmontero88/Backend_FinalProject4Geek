@@ -11,7 +11,7 @@ migrate = Migrate(app, db)
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
-from model.clasificado import *
+#from model.clasificado import *
 from model.favourite_product import *
 from model.favourite_user import *
 from model.match import *
