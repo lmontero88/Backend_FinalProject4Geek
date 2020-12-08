@@ -1,7 +1,7 @@
 import jwt
-from datetime import datetime
-from app import db, flask_bcrypt, key
-
+from datetime import datetime, timedelta
+from manage import db
+from app import flask_bcrypt, key
 
 
 class User(db.Model):
@@ -10,23 +10,18 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
-    registered_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
-    admin = db.Column(db.Boolean, nullable=False, default=False)
-    public_id = db.Column(db.String(100), unique=True)
-    username = db.Column(db.String(50), unique=True)
-    firstname = db.Column(db.String(100), nullable=False)
-    lastname = db.Column(db.String(100), nullable=False)
-    password = db.Column(db.String(100), nullable=False)
+    registered_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+    first_name = db.Column(db.String(100), nullable=False)
+    last_name = db.Column(db.String(100), nullable=False)
+    password_hash = db.Column(db.String(100), nullable=False)
     birthdate = db.Column(db.DateTime)
-    profile = db.relationship('Profile', backref="user", lazy=True, uselist=False)
-    phones = db.relationship('Phone', backref="user", lazy=True)
+    # phones = db.relationship('Phone', backref="user", lazy=True)
     region = db.Column(db.String(100))
     comuna = db.Column(db.String(100))
     gender = db.Column(db.String(100))
     dia_hora = db.Column(db.DateTime)
     status = db.Column(db.Boolean, default=True)
-    role = db.relationship('Role', secondary="role_users")
-
+    role_id = db.Column(db.Integer, db.ForeignKey('role.id'), nullable=False)
 
     def serialize(self):
         return {
@@ -43,7 +38,7 @@ class User(db.Model):
             "comuna": self.comuna,
             "gender": self.gender,
             "role": self.role,
-            "dia_hora":self.dia_hora
+            "dia_hora": self.dia_hora
         }
 
     @property
@@ -57,17 +52,19 @@ class User(db.Model):
     def check_password(self, password):
         return flask_bcrypt.check_password_hash(self.password_hash, password)
 
-    @staticmethod
-    def encode_auth_token(user_id):
+    def encode_auth_token(self):
         """
         Generates the Auth Token
         :return: string
         """
         try:
             payload = {
-                'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1, seconds=5),
-                'iat': datetime.datetime.utcnow(),
-                'sub': user_id
+                'exp': datetime.utcnow() + timedelta(days=1, seconds=5),
+                'iat': datetime.utcnow(),
+                'sub': self.id,
+                'role': self.role_id,
+                'firstName': self.first_name,
+                'email': self.email
             }
             return jwt.encode(
                 payload,

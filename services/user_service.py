@@ -1,18 +1,22 @@
 import uuid
 import datetime
 
-from app import db
+from manage import db
 from model.user import User
 
 
 def save_new_user(data):
     user = User.query.filter_by(email=data['email']).first()
+    role_id = 1  # lo ponemos como jugador
+    if data['isTeacher']:
+        role_id = 2
     if not user:
         new_user = User(
-            public_id=str(uuid.uuid4()),
             email=data['email'],
-            username=data['username'],
+            first_name=data['firstName'],
+            last_name=data['lastName'],
             password=data['password'],
+            role_id=role_id,
             registered_at=datetime.datetime.utcnow()
         )
         save_changes(new_user)

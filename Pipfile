@@ -22,7 +22,7 @@ python_version = "3.9"
 
 [scripts]
 start = "python app.py runserver"
-init = "python app.py db init"
-migrate = "python app.py db migrate"
-upgrade = "python app.py db upgrade"
-downgrade = "python app.py db downgrade"
+init = "flask db init"
+migrate = "flask db migrate"
+upgrade = "flask db upgrade"
+downgrade = "flask db downgrade"

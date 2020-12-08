@@ -1,17 +1,13 @@
 import os
 from flask import Flask
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from flask_migrate import Migrate, MigrateCommand
-from flask_script import Manager
-
 from dotenv import load_dotenv
+
 
 load_dotenv()
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-db = SQLAlchemy()
 flask_bcrypt = Bcrypt()
 
 app = Flask(__name__)
@@ -23,17 +19,16 @@ app.config['SECRET_KEY'] = key
 app.config['DEBUG'] = True
 app.config['ENV'] = 'development'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
-db.init_app(app)
 flask_bcrypt.init_app(app)
 
-migrate = Migrate(app, db)
-
-manager = Manager(app)
-
-manager.add_command('db', MigrateCommand)
 
 
-if __name__ == '__main__':#esto es para iniciar servidor Flask
-    manager.run()
+# no quitar esto, sino no ve las rutas y siempre dara 404
+# por cada controller que se cree se debe agregar su import aqui
+from controller.auth_controller import *
+from controller.user_controller import *
+
+if __name__ == '__main__':
+    app.run()
