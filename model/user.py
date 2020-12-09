@@ -88,3 +88,7 @@ class User(db.Model):
 
     def __repr__(self):
         return "<User '{}'>".format(self.username)
+
+    def save_changes(self):
+        db.session.add(self)
+        db.session.commit()

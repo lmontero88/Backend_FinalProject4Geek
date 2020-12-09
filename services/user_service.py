@@ -1,6 +1,8 @@
 import uuid
 import datetime
 
+from flask import jsonify, request
+
 from manage import db
 from model.user import User
 
@@ -44,3 +46,23 @@ def get_a_user(public_id):
 def save_changes(data):
     db.session.add(data)
     db.session.commit()
+
+#Modificar perfil
+def edit_profile():
+    if request.method == 'PUT':
+        user_email = request.json.get("user_email")
+        if not user_email:
+            return jsonify({"msg": "Campo email no puede estar vacio"}), 400
+        user_found = User.query.filter_by(email=user_email).first()
+        if not user_found:
+            return jsonify({"msg":"Email no válido"}), 400
+        status = request.json.get("status")
+        phones = request.json.get("phones")
+        photo = request.json.get("photo")
+        if not status or not phones or not photo:
+            return jsonify({"msg": "Los campos estado, foto y telefono no pueden estar vacios"}), 400
+        user_found.status = status
+        user_found.phones = phones
+        user_found.photo = photo
+        user_found.save_changes()
+        return jsonify({"msg":"Cambios guardados correctamente"}), 200
