@@ -1,39 +1,24 @@
-import os
-from flask_migrate import Migrate, MigrateCommand
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 from flask_script import Manager
-from flask.templating import render_template
-from api import blueprint
-from api.v1.app import create_app, db
-from api.v1.model import role, user, sport, clasificado, user_sport, favourite_user, favourite_product, profile, match
+from flask_migrate import Migrate, MigrateCommand
+from app import app
 
-
-
-
-# no quitar, es para que migre
-
-
-from dotenv import load_dotenv
-load_dotenv()
-
-app = create_app(os.getenv('ENVIRONMENT') or 'dev')
-app.register_blueprint(blueprint)
-
-app.app_context().push()
-
-manager = Manager(app)
-
+db = SQLAlchemy(app)
+db.init_app(app)
 migrate = Migrate(app, db)
 
+manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
-
-@manager.command
-def run():
-    app.run()
-
-@app.route('/')
-def root():
-    return render_template('index.html')
+#from model.clasificado import *
+from model.favourite_product import *
+from model.favourite_user import *
+from model.match import *
+from model.role import *
+from model.sport import *
+from model.user import *
+from model.user_sport import *
 
 if __name__ == '__main__':
     manager.run()
