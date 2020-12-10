@@ -52,7 +52,7 @@ def edit_profile():
     if request.method == 'PUT':
         user_email = request.json.get("user_email")
         if not user_email:
-            return jsonify({"msg": "Campo email no puede estar vacio"}), 400
+            return jsonify({"msg": "Email no puede estar vacio"}), 400
         user_found = User.query.filter_by(email=user_email).first()
         if not user_found:
             return jsonify({"msg":"Email no válido"}), 400
@@ -66,3 +66,31 @@ def edit_profile():
         user_found.photo = photo
         user_found.save_changes()
         return jsonify({"msg":"Cambios guardados correctamente"}), 200
+
+#Capturar datos del usuario
+def datos_user():
+    if request.method == 'PUT':
+        user_id = request.json.get('id')
+        if not user_id:
+            return jsonify({"msg":"ID no encontrado"}), 400
+        id_datos = User.query.filter_by(id=user_id).first()
+        if not id_datos:
+            return jsonify({"msg":"ID no válido"}), 400
+        first_name = request.json.get("first_name")
+        last_name = request.json.get("last_name")
+        birthdate = request.json.get("birthdate")
+        phones = request.json.get ("phones")
+        gender = request.json.get("gender")
+        status = request.json.get("status")
+        photo = request.json.get("photo")
+        if not first_name or not last_name or not birthdate or not phones or not gender or not status or not photo
+            return jsonify({"msg":"No se ha encontrado el usuario"}), 400
+        user_id.first_name = first_name
+        user_id.last_name = last_name
+        user_id.birthdate = birthdate
+        user_id.phones = phones
+        user_id.gender = gender
+        user_id.status = status
+        user_id.photo = photo
+        user_id.save_changes()
+        return jsonify({"msg":"Usuario encontrado"}), 200

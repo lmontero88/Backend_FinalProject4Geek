@@ -34,3 +34,9 @@ def get_users():
 def edit_user():
     """Permite editar campos del perfil"""
     return edit_profile()
+
+#Capturar datos del usuario
+@app.route("/api/perfildatos", methods =['GET'])
+def datos_perfil():
+    """Permite capturar todos los datos del perfil"""
+    return datos_user()
