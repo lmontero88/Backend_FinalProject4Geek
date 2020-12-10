@@ -21,6 +21,7 @@ class User(db.Model):
     status = db.Column(db.Boolean, default=True)
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'), nullable=False)
     photo = db.Column(db.String(100), default='without-photo.png')
+    #friends = db.relationship('Friend', backref='user', lazy=True)
 
     def serialize(self):
         return {
@@ -28,7 +29,7 @@ class User(db.Model):
             "firstname": self.first_name,
             "lastname": self.last_name,
             "email": self.email,
-            "password": self.password,
+            # "password": self.password_hash,
             "phones": self.phones,
             "status": self.status,
             "birthdate": self.birthdate,
