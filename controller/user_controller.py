@@ -2,7 +2,7 @@ from flask import request
 
 from app import app
 from utils.decorator import admin_token_required, token_required
-from services.user_service import save_new_user, get_all_users, edit_profile, registro_datos_user
+from services.user_service import save_new_user, get_all_users, edit_profile
 
 
 @app.route("/api/users", methods=['POST'])
@@ -29,14 +29,15 @@ def get_users():
     """Lista todos los usuarios registrados"""
     return get_all_users()
 
+
 #Modificar el perfil
 @app.route("/api/edit", methods=['PUT'])
 def edit_user():
     """Permite editar campos del perfil"""
     return edit_profile()
 
-#Capturar datos del usuario
-@app.route("/api/registro", methods =['POST'])
-def datos_perfil():
-    """Permite capturar todos los datos del perfil"""
-    return registro_datos_user()
+# #Capturar datos del usuario
+# @app.route("/api/registro", methods =['POST'])
+# def datos_perfil():
+#     """Permite capturar todos los datos del perfil"""
+#     return registro_datos_user()
