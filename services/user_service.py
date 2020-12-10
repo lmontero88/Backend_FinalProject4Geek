@@ -83,7 +83,7 @@ def datos_user():
         gender = request.json.get("gender")
         status = request.json.get("status")
         photo = request.json.get("photo")
-        if not first_name or not last_name or not birthdate or not phones or not gender or not status or not photo
+        if not first_name or not last_name or not birthdate or not phones or not gender or not status or not photo:
             return jsonify({"msg":"No se ha encontrado el usuario"}), 400
         user_id.first_name = first_name
         user_id.last_name = last_name
