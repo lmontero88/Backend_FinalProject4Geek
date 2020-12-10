@@ -16,6 +16,7 @@ class User(db.Model):
     password_hash = db.Column(db.String(100), nullable=False)
     birthdate = db.Column(db.DateTime)
     #dia_hora = db.Column(db.DateTime)
+    bio = db.Column(db.String(100))
     phones = db.Column(db.String(100))
     gender = db.Column(db.String(100))
     status = db.Column(db.Boolean, default=True)
@@ -28,7 +29,7 @@ class User(db.Model):
             "firstname": self.first_name,
             "lastname": self.last_name,
             "email": self.email,
-            "password": self.password,
+            "bio": self.bio,
             "phones": self.phones,
             "status": self.status,
             "birthdate": self.birthdate,

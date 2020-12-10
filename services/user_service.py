@@ -59,23 +59,22 @@ def edit_profile():
         status = request.json.get("status")
         phones = request.json.get("phones")
         photo = request.json.get("photo")
+        bio = request.json.get("bio")
         if not status or not phones or not photo:
             return jsonify({"msg": "Los campos estado, foto y telefono no pueden estar vacios"}), 400
         user_found.status = status
         user_found.phones = phones
         user_found.photo = photo
+        user_found = bio
         user_found.save_changes()
         return jsonify({"msg":"Cambios guardados correctamente"}), 200
 
-#Capturar datos del usuario
-def datos_user():
-    if request.method == 'PUT':
-        user_id = request.json.get('id')
-        if not user_id:
-            return jsonify({"msg":"ID no encontrado"}), 400
-        id_datos = User.query.filter_by(id=user_id).first()
-        if not id_datos:
-            return jsonify({"msg":"ID no válido"}), 400
+#Registro usuario
+def registro_datos_user():
+    if request.method == 'POST':
+        email = request.json.get('email')
+        if not email:
+            return jsonify({"msg":"Email es requerido"}), 400
         first_name = request.json.get("first_name")
         last_name = request.json.get("last_name")
         birthdate = request.json.get("birthdate")
@@ -83,14 +82,20 @@ def datos_user():
         gender = request.json.get("gender")
         status = request.json.get("status")
         photo = request.json.get("photo")
+        role_id = request.json.get("isTeacher", 1)
         if not first_name or not last_name or not birthdate or not phones or not gender or not status or not photo:
-            return jsonify({"msg":"No se ha encontrado el usuario"}), 400
-        user_id.first_name = first_name
-        user_id.last_name = last_name
-        user_id.birthdate = birthdate
-        user_id.phones = phones
-        user_id.gender = gender
-        user_id.status = status
-        user_id.photo = photo
-        user_id.save_changes()
-        return jsonify({"msg":"Usuario encontrado"}), 200
+            return jsonify({"msg":"Datos incompletos"}), 400
+
+        user = User.query.filter_by(email=email).first()
+        if user:
+            return jsonify({"msg": "Usuario ya registrado"}), 400
+        user = User()
+        user.last_name = last_name
+        user.birthdate = birthdate
+        user.phones = phones
+        user.gender = gender
+        user.role_id = role_id
+        #user.status = status
+        #user.photo = photo
+        user.save_changes()
+        return jsonify({"msg":"Usuario registrado correctamente"}), 200
