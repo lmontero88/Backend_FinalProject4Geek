@@ -22,6 +22,7 @@ class User(db.Model):
     status = db.Column(db.Boolean, default=True)
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'), nullable=False)
     photo = db.Column(db.String(100), default='without-photo.png')
+    #friends = db.relationship('Friend', backref='user', lazy=True)
 
     def serialize(self):
         return {
