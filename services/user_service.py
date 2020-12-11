@@ -10,7 +10,7 @@ from model.user import User
 def save_new_user(data):
     user = User.query.filter_by(email=data['email']).first()
     role_id = 1  # lo ponemos como jugador
-    if data['isTeacher']:
+    if data.get('isTeacher', False):
         role_id = 2
     if not user:
         new_user = User(
@@ -19,14 +19,19 @@ def save_new_user(data):
             last_name=data['lastName'],
             password=data['password'],
             role_id=role_id,
+            birthdate=data['birthdate'],
+            gender=data['gender'],
             registered_at=datetime.datetime.utcnow()
         )
         save_changes(new_user)
-        response_object = {
-            'status': 'success',
-            'message': 'Usuario registrado correctamente.'
-        }
-        return response_object, 201
+        auth_token = new_user.encode_auth_token()
+        if auth_token:
+            response_object = {
+                'status': 'success',
+                'message': 'Usuario registrado correctamente.',
+                'Authorization': auth_token.decode()
+            }
+            return response_object, 201
     else:
         response_object = {
             'status': 'fail',
