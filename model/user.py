@@ -22,6 +22,7 @@ class User(db.Model):
     status = db.Column(db.Boolean, default=True)
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'), nullable=False)
     photo = db.Column(db.String(100), default='without-photo.png')
+    user_sports = db.relationship('UserSport', backref='user', lazy=True)
     #friends = db.relationship('Friend', backref='user', lazy=True)
 
     def serialize(self):
@@ -38,7 +39,11 @@ class User(db.Model):
             "role": self.role_id,
             #"dia_hora": self.dia_hora,
             "photo":self.photo,
+            "sports": self.get_all_sports()
         }
+    def get_all_sports(self):
+        sports = list(map(lambda sport: sport.serialize(), self.user_sports))
+        return sports
 
     @property
     def password(self):

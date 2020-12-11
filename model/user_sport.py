@@ -17,5 +17,5 @@ class UserSport(db.Model):
             "experiencia": self.experiencia,
             "user_id": self.user_id,
             "sport_id": self.sport_id,
-            # "user": self.user
+            "sport": self.sport.serialize()
         }
