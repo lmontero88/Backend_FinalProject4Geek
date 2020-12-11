@@ -12,6 +12,4 @@ class Sport(db.Model):  # hasta aca estan ok las relaciones
         return {
             "id": self.id,
             "name": self.name,
-            #"clasificado": self.clasificados,
-            "user_sport": self.user_sport,
         }
