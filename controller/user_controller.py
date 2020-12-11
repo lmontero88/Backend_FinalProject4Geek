@@ -41,3 +41,4 @@ def edit_user():
 # def datos_perfil():
 #     """Permite capturar todos los datos del perfil"""
 #     return registro_datos_user()
+

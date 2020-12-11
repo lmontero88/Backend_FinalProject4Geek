@@ -14,6 +14,8 @@ werkzeug = "*"
 flask-cors = "*"
 pymysql = "*"
 python-dotenv = "*"
+django-timedeltafield = "*"
+flask-jwt-extended = "*"
 
 [dev-packages]
 
