@@ -13,7 +13,7 @@ class User(db.Model):
     registered_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
     first_name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
-    password_hash = db.Column(db.String(100), nullable=False)
+    password_hash = db.Column(db.String(100), nullable=False) 
     birthdate = db.Column(db.DateTime)
     #dia_hora = db.Column(db.DateTime)
     bio = db.Column(db.String(100))
