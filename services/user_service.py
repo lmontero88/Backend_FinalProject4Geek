@@ -20,7 +20,7 @@ def save_new_user(data):
             last_name=data['lastName'],
             password=data['password'],
             role_id=role_id,
-            birthdate=data['birthdate'],
+            birthdate=datetime.datetime.strptime(data['birthdate'], '%Y-%m-%d'),
             gender=data['gender'],
             registered_at=datetime.datetime.utcnow()
         )

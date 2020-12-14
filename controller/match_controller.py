@@ -1,17 +1,23 @@
 from flask import request
 from app import app
-from services.match_services import get_all_jugadores, create_match_players, get_my_pending_matchs, get_my_friends, update_match
+from services.match_services import get_all_jugadores, create_match_players, get_my_pending_matchs, get_my_friends, update_match,get_jugadores
 from utils.decorator import token_required
 
 
-@token_required
 @app.route("/api/players", methods=['GET'])
-def jugadores_disponibles():
-    return get_all_jugadores()
-
-
 @token_required
+def jugadores_disponibles(data_token):
+    return get_all_jugadores(data_token)
+
+
+@app.route("/api/players/<id>", methods=['GET'])
+@token_required
+def jugador_disponible(data_token, id):
+    return get_jugadores(id)
+
+
 @app.route("/api/matchs", methods=['POST'])
+@token_required
 def create_match():
     try:
         user_id_from = request.json.get('user_id_from', None)
@@ -31,8 +37,8 @@ def create_match():
     return response
 
 
-@token_required
 @app.route("/api/matchs/pending/<user_id>", methods=['GET'])
+@token_required
 def get_pending_matchs(user_id):
     try:
         return get_my_pending_matchs(user_id)
@@ -55,8 +61,8 @@ def get_my_matchs(user_id):
         }, 500
 
 
-@token_required
 @app.route("/api/matchs", methods=['PUT'])
+@token_required
 def update_request_match():
     try:
         match_id = request.json.get('match_id', None)

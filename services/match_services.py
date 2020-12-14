@@ -6,10 +6,28 @@ from sqlalchemy import or_, and_
 from manage import db
 
 
-def get_all_jugadores():
+def get_all_jugadores(data_token):
     jugadores = User.query.filter_by(role_id=1, status=True).all()
-    json_jugadores = list(map(lambda l: l.serialize(), jugadores))
+    json_jugadores = list(map(lambda l:  {
+            "id": l.id,
+            "firstname": l.first_name,
+            "lastname": l.last_name,
+            "photo": l.photo,
+        }, list(filter(lambda j: (j.id != data_token.get('user_id')), jugadores))))
     return jsonify(json_jugadores)
+
+
+def get_jugadores(id):
+    if id is not None:
+        jugador = User.query.get(id)
+        if jugador:
+            return jsonify(jugador.serialize()), 200
+        else:
+            return jsonify({"msg": "Jugador doesn't exist"}), 404
+    else:
+        jugadores = User.query.all()
+        jugadores = list(map(lambda contact: contact.serialize(), jugadores))
+        return jsonify(jugadores), 200
 
 
 def create_match_players(user_id_from, user_id_to):

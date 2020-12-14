@@ -38,9 +38,10 @@ class User(db.Model):
             "gender": self.gender,
             "role": self.role_id,
             #"dia_hora": self.dia_hora,
-            "photo":self.photo,
+            "photo": self.photo,
             "sports": self.get_all_sports()
         }
+
     def get_all_sports(self):
         sports = list(map(lambda sport: sport.serialize(), self.user_sports))
         return sports

@@ -23,8 +23,8 @@ def create_user():
     return response
 
 
-@admin_token_required
 @app.route("/api/users", methods=['GET'])
+@admin_token_required
 def get_users():
     """Lista todos los usuarios registrados"""
     return get_all_users()
@@ -32,6 +32,7 @@ def get_users():
 
 #Modificar el perfil
 @app.route("/api/edit", methods=['PUT'])
+@token_required
 def edit_user():
     """Permite editar campos del perfil"""
     return edit_profile()
