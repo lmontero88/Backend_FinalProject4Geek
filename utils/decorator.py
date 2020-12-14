@@ -8,14 +8,20 @@ from services.auth_service import get_logged_in_user
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
+        if not 'Authorization' in request.headers:
+            response_object = {
+                'status': 'fail',
+                'message': 'Token requerido'
+            }
+            return response_object, 401
 
         data, status = get_logged_in_user(request)
-        token = data.get('data')
+        data_token = data.get('data')
 
-        if not token:
-            return data, status
+        if not data_token:
+            return data_token, status
 
-        return f(*args, **kwargs)
+        return f(data_token, *args, **kwargs)
 
     return decorated
 

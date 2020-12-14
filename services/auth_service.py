@@ -33,7 +33,7 @@ def get_logged_in_user(new_request):
                     'user_id': user.id,
                     'email': user.email,
                     'role_id': user.role_id,
-                    'registered_on': str(user.registered_on)
+                    'registered_at': str(user.registered_at)
                 }
             }
             return response_object, 200
