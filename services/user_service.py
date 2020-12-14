@@ -6,6 +6,7 @@ from flask import jsonify, request
 from manage import db
 from model.user import User
 
+ALLOWED_EXTENSIONS_IMG = {'png', 'jpg', 'jpeg'} #para las imagenes
 
 def save_new_user(data):
     user = User.query.filter_by(email=data['email']).first()
@@ -104,3 +105,4 @@ def edit_profile():
 #         #user.photo = photo
 #         user.save_changes()
 #         return jsonify({"msg":"Usuario registrado correctamente"}), 200
+
