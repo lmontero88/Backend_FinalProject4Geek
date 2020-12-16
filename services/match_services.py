@@ -17,7 +17,7 @@ def get_all_jugadores(data_token):
     return jsonify(json_jugadores)
 
 
-def get_jugadores(id):
+def get_jugador(id):
     if id is not None:
         jugador = User.query.get(id)
         if jugador:
@@ -41,13 +41,25 @@ def create_match_players(user_id_from, user_id_to):
         }
         return response_object, 404
 
-    match = Match(user_from_id=user_id_from, user_to_id=user_id_to)
+    match_between = Match.query.filter_by(user_from_id=user_id_from, user_to_id=user_id_to).first()
 
-    save_changes(match)
-    response_object = {
-        'status': 'success',
-        'message': 'Match enviado correctamente.'
-    }
+    if not match_between or match_between.status_request == -1:
+        match = Match(user_from_id=user_id_from, user_to_id=user_id_to)
+        save_changes(match)
+        response_object = {
+            'status': 'success',
+            'message': 'Match enviado correctamente.'
+        }
+    elif match_between.status_request == 0:
+        response_object = {
+            'status': 'success',
+            'message': 'Ya existe una solicitud enviada.'
+        }
+    else:
+        response_object = {
+            'status': 'success',
+            'message': 'Ya hicieron match.'
+        }
     return response_object, 200
 
 
@@ -62,8 +74,8 @@ def get_my_pending_matchs(user_id):
     if len(pending_user_ids) == 0:
         return jsonify([])
 
-    pending_users = User.query.filter(User.id.contains(pending_user_ids)).all()
-    json_pending_users = list(map(lambda l: l.serialize(), pending_users))
+    pending_users = User.query.filter(User.id.in_(pending_user_ids)).all()
+    json_pending_users = list(map(lambda l: l.mini_serialize(), pending_users))
     return jsonify(json_pending_users)
 
 
@@ -79,13 +91,13 @@ def get_my_friends(user_id):
     if len(user_ids) == 0:
         return jsonify([])
 
-    friends_of_user = User.query.filter(User.id.contains(user_ids)).all()
+    friends_of_user = User.query.filter(User.id.in_(user_ids)).all()
     json_friends_of_user = list(map(lambda l: l.serialize(), friends_of_user))
     return jsonify(json_friends_of_user)
 
 
-def update_match(match_id, is_accepted):
-    match = Match.query.get(match_id)
+def update_match(friend_id, user_id, is_accepted):
+    match = Match.query.filter_by(user_from_id=friend_id, user_to_id=user_id, status_request=0).first()
 
     if not match:
         response_object = {

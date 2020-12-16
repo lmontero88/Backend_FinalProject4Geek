@@ -1,6 +1,6 @@
 from flask import request
 from app import app
-from services.match_services import get_all_jugadores, create_match_players, get_my_pending_matchs, get_my_friends, update_match,get_jugadores
+from services.match_services import get_all_jugadores, create_match_players, get_my_pending_matchs, get_my_friends, update_match,get_jugador
 from utils.decorator import token_required
 
 
@@ -13,14 +13,14 @@ def jugadores_disponibles(data_token):
 @app.route("/api/players/<id>", methods=['GET'])
 @token_required
 def jugador_disponible(data_token, id):
-    return get_jugadores(id)
+    return get_jugador(id)
 
 
 @app.route("/api/matchs", methods=['POST'])
 @token_required
-def create_match():
+def create_match(data_token):
     try:
-        user_id_from = request.json.get('user_id_from', None)
+        user_id_from = data_token.get('user_id', None)
         user_id_to = request.json.get('user_id_to', None)
 
         if not user_id_to or not user_id_from:
@@ -37,10 +37,11 @@ def create_match():
     return response
 
 
-@app.route("/api/matchs/pending/<user_id>", methods=['GET'])
+@app.route("/api/matchs/pending", methods=['GET'])
 @token_required
-def get_pending_matchs(user_id):
+def get_pending_matchs(data_token):
     try:
+        user_id = data_token.get('user_id', None)
         return get_my_pending_matchs(user_id)
     except Exception as e:
         return {
@@ -49,10 +50,11 @@ def get_pending_matchs(user_id):
         }, 500
 
 
+@app.route("/api/matchs", methods=['GET'])
 @token_required
-@app.route("/api/matchs/<user_id>", methods=['GET'])
-def get_my_matchs(user_id):
+def get_my_matchs(data_token):
     try:
+        user_id = data_token.get('user_id', None)
         return get_my_friends(user_id)
     except Exception as e:
         return {
@@ -63,17 +65,18 @@ def get_my_matchs(user_id):
 
 @app.route("/api/matchs", methods=['PUT'])
 @token_required
-def update_request_match():
+def update_request_match(data_token):
     try:
-        match_id = request.json.get('match_id', None)
+        friend_id = request.json.get('friend_id', None)
         is_accepted = request.json.get('is_accepted', False)
+        user_id = data_token.get('user_id', None)
 
-        if not match_id:
+        if not friend_id:
             return {
                        'status': 'fail',
                        'message': "Solicitud incorrecta. Faltan campos requeridos."
                    }, 400
-        return update_match(match_id, is_accepted)
+        return update_match(friend_id, user_id, is_accepted)
     except Exception as e:
         return {
             'status': 'fail',

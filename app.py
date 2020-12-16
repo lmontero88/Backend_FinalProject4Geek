@@ -30,6 +30,7 @@ from controller.auth_controller import *
 from controller.user_controller import *
 from controller.match_controller import *
 from controller.recuperar_pass_controller import *
+from controller.profesor_controller import *
 
 
 if __name__ == '__main__':

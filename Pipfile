@@ -16,6 +16,7 @@ pymysql = "*"
 python-dotenv = "*"
 django-timedeltafield = "*"
 flask-jwt-extended = "*"
+sendgrid = "*"
 
 [dev-packages]
 

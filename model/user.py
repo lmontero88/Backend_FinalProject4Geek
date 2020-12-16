@@ -42,6 +42,15 @@ class User(db.Model):
             "sports": self.get_all_sports()
         }
 
+    def mini_serialize(self):
+        return {
+            "id": self.id,
+            "firstname": self.first_name,
+            "lastname": self.last_name,
+            "email": self.email,
+            "photo": self.photo,
+        }
+
     def get_all_sports(self):
         sports = list(map(lambda sport: sport.serialize(), self.user_sports))
         return sports
